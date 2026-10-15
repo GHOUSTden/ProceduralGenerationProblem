@@ -5,14 +5,11 @@ public class DungeonRoom
 {
     public Vector2Int roomSize;
     public Vector2Int roomCoordinates;
-    public List<DungeonCell> cells;
+    public List<DungeonCell> cells = new List<DungeonCell>();
 
     public void GenerateCells()
     {
-        if (cells != null)
-        {
-            cells.Clear();
-        }
+        cells.Clear();
         
         for (int y = 0; y < roomSize.y; y++)
         {
