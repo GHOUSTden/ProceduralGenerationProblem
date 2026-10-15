@@ -3,21 +3,20 @@ using System.Collections.Generic;
 
 public class DungeonRoom
 {
-    public Vector2Int roomSize;
-    public Vector2Int roomCoordinates;
+    public RectInt bounds;
     public List<DungeonCell> cells = new List<DungeonCell>();
 
     public void GenerateCells()
     {
         cells.Clear();
         
-        for (int y = 0; y < roomSize.y; y++)
+        for (int y = 0; y < bounds.size.y; y++)
         {
-            for (int x = 0; x < roomSize.x; x++)
+            for (int x = 0; x < bounds.size.x; x++)
             {
                 Vector2Int takenCoordinates = new Vector2Int(
-                    roomCoordinates.x + x, 
-                    roomCoordinates.y + y);
+                    bounds.position.x + x, 
+                    bounds.position.y + y);
 
                 DungeonCell cell = new DungeonCell();
 
@@ -32,7 +31,7 @@ public class DungeonRoom
 
     public bool CheckRoomIntersect(DungeonRoom buffer)
     {
-        return !((roomCoordinates.x >= (buffer.roomCoordinates.x + buffer.roomSize.x)) || ((roomCoordinates.x + roomSize.x) <= buffer.roomCoordinates.x)
-            || (roomCoordinates.y >= (buffer.roomCoordinates.y + buffer.roomSize.y)) || ((roomCoordinates.y + roomSize.y) <= buffer.roomCoordinates.y));
+        return !((bounds.position.x >= (buffer.bounds.position.x + buffer.bounds.size.x)) || ((bounds.position.x + bounds.size.x) <= buffer.bounds.position.x)
+            || (bounds.position.y >= (buffer.bounds.position.y + buffer.bounds.size.y)) || ((bounds.position.y + bounds.size.y) <= buffer.bounds.position.y));
     }
 }

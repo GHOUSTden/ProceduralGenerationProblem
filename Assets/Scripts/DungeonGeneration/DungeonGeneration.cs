@@ -47,12 +47,12 @@ public class DungeonGeneration : MonoBehaviour
             bool isValid = true;
             
             DungeonRoom candidateRoom = new DungeonRoom();
-            candidateRoom.roomCoordinates = location;
-            candidateRoom.roomSize = roomSize;
+            candidateRoom.bounds.position = location;
+            candidateRoom.bounds.size = roomSize;
 
             DungeonRoom bufferRoom = new DungeonRoom();
-            bufferRoom.roomCoordinates = location + new Vector2Int(-1, -1);
-            bufferRoom.roomSize = roomSize + new Vector2Int(2, 2);
+            bufferRoom.bounds.position = location + new Vector2Int(-1, -1);
+            bufferRoom.bounds.size = roomSize + new Vector2Int(2, 2);
 
             foreach (var room in rooms)
             {
