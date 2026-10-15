@@ -9,11 +9,14 @@ public class DungeonGeneration : MonoBehaviour
     [Header("Dungeon Settings")]
     [SerializeField] private int dungeonWidth;
     [SerializeField] private int dungeonDepth;
+    public float cellSize;
+    public float floorHeight;
     [SerializeField] private int roomCount;
     [SerializeField] private Vector2Int roomMaxSize;
     [SerializeField] private Vector2Int roomMinSize;
 
     [Header("References")] 
+    [SerializeField] private DungeonVisualizer dungeonVisualizer;
     [SerializeField] private GameObject roomCubePrefab;
     [SerializeField] private GameObject hallwayCubePrefab;
     
