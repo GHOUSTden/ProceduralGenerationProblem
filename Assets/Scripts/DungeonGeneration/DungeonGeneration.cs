@@ -26,12 +26,12 @@ public class DungeonGeneration : MonoBehaviour
 
     private void Generate()
     {
-        random = new Random(0);
+        random = new Random(10);
         rooms = new List<DungeonRoom>();
         
         PlaceRooms();
     }
-
+    
     private void PlaceRooms()
     {
         for (int i = 0; i < roomCount; i++)
@@ -56,7 +56,7 @@ public class DungeonGeneration : MonoBehaviour
 
             foreach (var room in rooms)
             {
-                if (CheckRoomIntersect(room, bufferRoom))
+                if (room.CheckRoomIntersect(bufferRoom))
                 {
                     isValid = false;
                     break;
@@ -80,12 +80,6 @@ public class DungeonGeneration : MonoBehaviour
                 PlaceRoom(candidateRoom);
             }
         }
-    }
-    
-    private bool CheckRoomIntersect(DungeonRoom room, DungeonRoom buffer)
-    {
-        return !((room.roomCoordinates.x >= (buffer.roomCoordinates.x + buffer.roomSize.x)) || ((room.roomCoordinates.x + room.roomSize.x) <= buffer.roomCoordinates.x)
-            || (room.roomCoordinates.y >= (buffer.roomCoordinates.y + buffer.roomSize.y)) || ((room.roomCoordinates.y + room.roomSize.y) <= buffer.roomCoordinates.y));
     }
 
     private void PlaceRoom(DungeonRoom room)

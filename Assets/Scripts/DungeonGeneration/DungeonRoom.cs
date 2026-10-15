@@ -30,9 +30,9 @@ public class DungeonRoom
         }
     }
 
-    public bool CheckRoomIntersect(DungeonRoom room, DungeonRoom buffer)
+    public bool CheckRoomIntersect(DungeonRoom buffer)
     {
-        return !((room.roomCoordinates.x >= (buffer.roomCoordinates.x + buffer.roomSize.x)) || ((room.roomCoordinates.x + room.roomSize.x) <= buffer.roomCoordinates.x)
-            || (room.roomCoordinates.y >= (buffer.roomCoordinates.y + buffer.roomSize.y)) || ((room.roomCoordinates.y + room.roomSize.y) <= buffer.roomCoordinates.y));
+        return !((roomCoordinates.x >= (buffer.roomCoordinates.x + buffer.roomSize.x)) || ((roomCoordinates.x + roomSize.x) <= buffer.roomCoordinates.x)
+            || (roomCoordinates.y >= (buffer.roomCoordinates.y + buffer.roomSize.y)) || ((roomCoordinates.y + roomSize.y) <= buffer.roomCoordinates.y));
     }
 }
