@@ -1,8 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
-using UnityEditor.Rendering;
 using Random = System.Random;
-using Vector2 = System.Numerics.Vector2;
 
 public class DungeonGeneration : MonoBehaviour
 {
@@ -17,8 +15,6 @@ public class DungeonGeneration : MonoBehaviour
 
     [Header("References")] 
     [SerializeField] private DungeonVisualizer dungeonVisualizer;
-    [SerializeField] private GameObject roomCubePrefab;
-    [SerializeField] private GameObject hallwayCubePrefab;
     
     private List<DungeonRoom> rooms;
     private Random random;
@@ -94,7 +90,9 @@ public class DungeonGeneration : MonoBehaviour
 
     private void PlaceRoom(DungeonRoom room)
     {
-        Vector2Int roomPosition = room.roomCoordinates;
-        Vector2Int roomSize = room.roomSize;
+        foreach (var cell in room.cells)
+        {
+            dungeonVisualizer.VisualizeCell(cell);
+        }
     }
 }

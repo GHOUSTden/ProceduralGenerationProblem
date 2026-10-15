@@ -9,7 +9,10 @@ public class DungeonRoom
 
     public void GenerateCells()
     {
-        cells.Clear();
+        if (cells != null)
+        {
+            cells.Clear();
+        }
         
         for (int y = 0; y < roomSize.y; y++)
         {
