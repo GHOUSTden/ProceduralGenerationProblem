@@ -15,6 +15,8 @@ public class DungeonGeneration : MonoBehaviour
 
     [Header("References")] 
     [SerializeField] private DungeonVisualizer dungeonVisualizer;
+    [SerializeField] private DelaunayTriangulation delaunayTriangulation;
+    [SerializeField] private GizmosVisualization gizmosVisualization;
     
     private List<DungeonRoom> rooms;
     private Random random;
@@ -30,6 +32,7 @@ public class DungeonGeneration : MonoBehaviour
         rooms = new List<DungeonRoom>();
         
         PlaceRooms();
+        Triangulate();
     }
     
     private void PlaceRooms()
@@ -82,6 +85,20 @@ public class DungeonGeneration : MonoBehaviour
         }
     }
 
+    private void Triangulate()
+    {
+        List<Vector3> vertices = new List<Vector3>();
+        
+        foreach (var room in rooms)
+        {
+            vertices.Add(new Vector3((room.bounds.xMin + room.bounds.xMax - 1) / 2f, 0f, (room.bounds.yMin + room.bounds.yMax - 1) / 2f));
+        }
+        
+        Debug.Log($"All the {vertices.Count} vertices:");
+        
+        gizmosVisualization.GetVertices(vertices);
+    }
+    
     private void PlaceRoom(DungeonRoom room)
     {
         foreach (var cell in room.cells)
