@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DelaunayTriangle : MonoBehaviour
+public class DelaunayTriangle
 {
     public DelaunayVertex A { get; }
     public DelaunayVertex B { get; }

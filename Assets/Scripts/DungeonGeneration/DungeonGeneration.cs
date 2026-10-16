@@ -99,8 +99,12 @@ public class DungeonGeneration : MonoBehaviour
             
             vertices.Add(vertex);
         }
+        Debug.Log($"All the {vertices.Count} vertices:");
+        
+        delaunayTriangulation.Initialize(vertices);
         
         gizmosVisualization.GetVertices(vertices, cellSize);
+        gizmosVisualization.GetSuperTriangle(delaunayTriangulation.SuperTriangle);
     }
     
     private void PlaceRoom(DungeonRoom room)

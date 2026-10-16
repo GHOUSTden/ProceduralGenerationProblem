@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DelaunayEdge : MonoBehaviour
+public class DelaunayEdge
 {
     public DelaunayVertex Start { get; }
     public DelaunayVertex End { get; }
