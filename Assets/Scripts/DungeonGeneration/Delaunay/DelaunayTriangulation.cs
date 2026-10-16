@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -8,6 +7,8 @@ public class DelaunayTriangulation : MonoBehaviour
 
     private DelaunayTriangle superTriangle;
     public DelaunayTriangle SuperTriangle => superTriangle;
+
+    public IReadOnlyList<DelaunayTriangle> Triangles => triangles;
     
     public void Initialize(List<DelaunayVertex> vertices)
     {
@@ -24,6 +25,45 @@ public class DelaunayTriangulation : MonoBehaviour
         triangles.Add(superTriangle);
     }
 
+    public void TriangulateVertices(List<DelaunayVertex> vertices)
+    {
+        Initialize(vertices);
+
+        if (superTriangle == null)
+        {
+            return;
+        }
+
+        foreach (DelaunayVertex vertex in vertices)
+        {
+            List<DelaunayTriangle> badTriangles = FindBadTriangles(vertex);
+
+            if (badTriangles.Count == 0)
+            {
+                Debug.LogWarning($"No affected triangles found for vertex {vertex.Id}.");
+                
+                continue;
+            }
+
+            List<DelaunayEdge> boundaryEdges = FindBoundaryEdges(badTriangles);
+
+            foreach (DelaunayTriangle triangle in badTriangles)
+            {
+                triangles.Remove(triangle);
+            }
+
+            foreach (DelaunayEdge edge in boundaryEdges)
+            {
+                DelaunayTriangle newTriangle = new DelaunayTriangle(edge.Start, edge.End, vertex);
+                
+                triangles.Add(newTriangle);
+            }
+        }
+
+        RemoveSuperTriangleTriangles();
+        Debug.Log($"Delaunay triangulation finished: {triangles.Count} triangles.");
+    }
+    
     private DelaunayTriangle CreateSuperTriangle(List<DelaunayVertex> vertices)
     {
         float minX = vertices[0].Coordinate.x;
@@ -66,5 +106,61 @@ public class DelaunayTriangulation : MonoBehaviour
         DelaunayVertex rightVertex = new DelaunayVertex(maxVertexId + 3, rightCoordinate);
 
         return new DelaunayTriangle(leftVertex, topVertex, rightVertex);
+    }
+
+    private List<DelaunayTriangle> FindBadTriangles(DelaunayVertex vertex)
+    {
+        List<DelaunayTriangle> badTriangles = new List<DelaunayTriangle>();
+
+        foreach (DelaunayTriangle triangle in triangles)
+        {
+            if (triangle.CircumcircleContains(vertex))
+            {
+                badTriangles.Add(triangle);
+            }
+        }
+
+        return badTriangles;
+    }
+
+    private List<DelaunayEdge> FindBoundaryEdges(List<DelaunayTriangle> badTriangles)
+    {
+        List<DelaunayEdge> boundaryEdges = new List<DelaunayEdge>();
+
+        foreach (DelaunayTriangle triangle in badTriangles)
+        {
+            AddOrCancelEdge(boundaryEdges, new DelaunayEdge(triangle.A, triangle.B));
+            AddOrCancelEdge(boundaryEdges, new DelaunayEdge(triangle.B, triangle.C));
+            AddOrCancelEdge(boundaryEdges, new DelaunayEdge(triangle.C, triangle.A));
+        }
+
+        return boundaryEdges;
+    }
+
+    private void AddOrCancelEdge(List<DelaunayEdge> edges, DelaunayEdge candidateEdge)
+    {
+        for (int i = 0; i < edges.Count; i++)
+        {
+            if (edges[i].HasSameEndpoints(candidateEdge))
+            {
+                edges.RemoveAt(i);
+                return;
+            }
+        }
+        
+        edges.Add(candidateEdge);
+    }
+
+    private void RemoveSuperTriangleTriangles()
+    {
+        if (superTriangle == null)
+        {
+            return;
+        }
+
+        triangles.RemoveAll(triangle =>
+            triangle.ContainsVertex(superTriangle.A) || 
+            triangle.ContainsVertex(superTriangle.B) ||
+            triangle.ContainsVertex(superTriangle.C));
     }
 }

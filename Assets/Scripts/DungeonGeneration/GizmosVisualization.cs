@@ -5,7 +5,8 @@ using System.Collections.Generic;
 public class GizmosVisualization : MonoBehaviour
 {
     private List<DelaunayVertex> roomCenters;
-    private DelaunayTriangle superTriangle;
+
+    private IReadOnlyList<DelaunayTriangle> triangles;
 
     private float cellSize = 1f;
     
@@ -15,17 +16,22 @@ public class GizmosVisualization : MonoBehaviour
         cellSize = currentCellSize;
     }
 
-    public void GetSuperTriangle(DelaunayTriangle triangle)
+    public void GetTriangles(IReadOnlyList<DelaunayTriangle> currentTriangles)
     {
-        superTriangle = triangle;
+        triangles = currentTriangles;
     }
     
     private void OnDrawGizmos()
     {
         GizmosVisualizeVertices();
-        GizmosVisualizeSuperTriangle();
+        GizmosVisualizeTriangles();
     }
 
+    private Vector3 GetWorldPosition(DelaunayVertex vertex)
+    {
+        return new Vector3(vertex.Coordinate.x * cellSize, 0f, vertex.Coordinate.y * cellSize);
+    }
+    
     private void GizmosVisualizeVertices()
     {
         if (roomCenters == null)
@@ -37,25 +43,28 @@ public class GizmosVisualization : MonoBehaviour
 
         foreach (DelaunayVertex vertex in roomCenters)
         {
-            Gizmos.DrawSphere(new Vector3(vertex.Coordinate.x * cellSize, 0f, vertex.Coordinate.y * cellSize), 0.5f * cellSize);
+            Gizmos.DrawSphere(GetWorldPosition(vertex), 0.5f * cellSize);
         }
     }
 
-    private void GizmosVisualizeSuperTriangle()
+    private void GizmosVisualizeTriangles()
     {
-        if (superTriangle == null)
+        if (triangles == null)
         {
             return;
         }
 
-        Vector3 a = new Vector3(superTriangle.A.Coordinate.x * cellSize, 0f, superTriangle.A.Coordinate.y * cellSize);
-        Vector3 b = new Vector3(superTriangle.B.Coordinate.x * cellSize, 0f, superTriangle.B.Coordinate.y * cellSize);
-        Vector3 c = new Vector3(superTriangle.C.Coordinate.x * cellSize, 0f, superTriangle.C.Coordinate.y * cellSize);
+        Gizmos.color = Color.green;
 
-        Gizmos.color = Color.yellow;
-        
-        Gizmos.DrawLine(a, b);
-        Gizmos.DrawLine(b, c);
-        Gizmos.DrawLine(c, a);
+        foreach (DelaunayTriangle triangle in triangles)
+        {
+            Vector3 a = GetWorldPosition(triangle.A);
+            Vector3 b = GetWorldPosition(triangle.B);
+            Vector3 c = GetWorldPosition(triangle.C);
+            
+            Gizmos.DrawLine(a, b);
+            Gizmos.DrawLine(b, c);
+            Gizmos.DrawLine(c, a);
+        }
     }
 }
