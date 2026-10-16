@@ -87,14 +87,20 @@ public class DungeonGeneration : MonoBehaviour
 
     private void Triangulate()
     {
-        List<Vector2> vertices = new List<Vector2>();
-        
-        foreach (var room in rooms)
+        List<DelaunayVertex> vertices = new List<DelaunayVertex>();
+
+        for (int roomIndex = 0; roomIndex < rooms.Count; roomIndex++)
         {
-            vertices.Add(new Vector2((room.bounds.xMin + room.bounds.xMax - 1) / 2f, (room.bounds.yMin + room.bounds.yMax - 1) / 2f));
+            DungeonRoom room = rooms[roomIndex];
+
+            Vector2 roomCenter = new Vector2((room.bounds.xMin + room.bounds.xMax - 1) / 2f, (room.bounds.yMin + room.bounds.yMax - 1) / 2f);
+
+            DelaunayVertex vertex = new DelaunayVertex(roomIndex, roomCenter);
+            
+            vertices.Add(vertex);
         }
         
-        gizmosVisualization.GetVertices(vertices);
+        gizmosVisualization.GetVertices(vertices, cellSize);
     }
     
     private void PlaceRoom(DungeonRoom room)
