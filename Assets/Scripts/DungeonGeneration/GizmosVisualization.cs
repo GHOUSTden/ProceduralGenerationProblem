@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 public class GizmosVisualization : MonoBehaviour
 {
-    public List<Vector3> roomCenters;
+    public List<Vector2> roomCenters;
 
-    public void GetVertices(List<Vector3> vertices)
+    public void GetVertices(List<Vector2> vertices)
     {
         roomCenters = vertices;
     }
@@ -40,7 +40,7 @@ public class GizmosVisualization : MonoBehaviour
 
         foreach (var vertex in roomCenters)
         {
-            Gizmos.DrawSphere(new Vector3(vertex.x, 0f, vertex.z), 0.5f);
+            Gizmos.DrawSphere(new Vector3(vertex.x, 0f, vertex.y), 0.5f);
         }
     }
 }

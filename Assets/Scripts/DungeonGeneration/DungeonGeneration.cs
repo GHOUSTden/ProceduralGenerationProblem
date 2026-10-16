@@ -87,14 +87,12 @@ public class DungeonGeneration : MonoBehaviour
 
     private void Triangulate()
     {
-        List<Vector3> vertices = new List<Vector3>();
+        List<Vector2> vertices = new List<Vector2>();
         
         foreach (var room in rooms)
         {
-            vertices.Add(new Vector3((room.bounds.xMin + room.bounds.xMax - 1) / 2f, 0f, (room.bounds.yMin + room.bounds.yMax - 1) / 2f));
+            vertices.Add(new Vector2((room.bounds.xMin + room.bounds.xMax - 1) / 2f, (room.bounds.yMin + room.bounds.yMax - 1) / 2f));
         }
-        
-        Debug.Log($"All the {vertices.Count} vertices:");
         
         gizmosVisualization.GetVertices(vertices);
     }
