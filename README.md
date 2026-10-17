@@ -23,6 +23,7 @@ For this project I was using Unity 6.6 for now, but later i planned to use Unity
 
 ## Sources & Inspiration
 A huge thank you to the creators and resources that made this project possible:
+
 [1] https://vazgriz.com/119/procedurally-generated-dungeons/
 
 [2] https://github.com/vazgriz/DungeonGenerator
