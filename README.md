@@ -1,7 +1,6 @@
 # My Solution On Procedural Dungeon Generation In Unity
 
 So, this is my attempt at creating procedural dungeon generation on Unity using Delaunay Triangulation, MST, Cycles, A* for pathfinding. 
-I tried to make everything simple to understand in scripts, so other can easily understand what i have written here and also me too.
 
 > [!NOTE]
 > This project was built primarily for my own game development needs, but is structured to be easily understood, extended, and used by other developers!
