@@ -7,8 +7,14 @@ public class GizmosVisualization : MonoBehaviour
     private List<DelaunayVertex> roomCenters;
 
     private IReadOnlyList<DelaunayTriangle> triangles;
+    
+    private IReadOnlyList<RoomConnection> mstConnections;
 
     private float cellSize = 1f;
+
+    public bool visualizeVertices = true;
+    public bool visualizeTriangles = true;
+    public bool visualizeMST = true;
     
     public void GetVertices(List<DelaunayVertex> vertices, float currentCellSize)
     {
@@ -20,11 +26,28 @@ public class GizmosVisualization : MonoBehaviour
     {
         triangles = currentTriangles;
     }
+
+    public void GetMSTConnections(IReadOnlyList<RoomConnection> connections)
+    {
+        mstConnections = connections;
+    }
     
     private void OnDrawGizmos()
     {
-        GizmosVisualizeVertices();
-        GizmosVisualizeTriangles();
+        if (visualizeTriangles)
+        {
+            GizmosVisualizeTriangles();
+        }
+
+        if (visualizeMST)
+        {
+            GizmosVisualizeMSTConnections();
+        }
+
+        if (visualizeVertices)
+        {
+            GizmosVisualizeVertices();
+        }
     }
 
     private Vector3 GetWorldPosition(DelaunayVertex vertex)
@@ -65,6 +88,24 @@ public class GizmosVisualization : MonoBehaviour
             Gizmos.DrawLine(a, b);
             Gizmos.DrawLine(b, c);
             Gizmos.DrawLine(c, a);
+        }
+    }
+
+    private void GizmosVisualizeMSTConnections()
+    {
+        if (mstConnections == null)
+        {
+            return;
+        }
+
+        Gizmos.color = Color.yellow;
+
+        foreach (RoomConnection connection in mstConnections)
+        {
+            Vector3 start = GetWorldPosition(connection.Start);
+            Vector3 end = GetWorldPosition(connection.End);
+            
+            Gizmos.DrawLine(start, end);
         }
     }
 }

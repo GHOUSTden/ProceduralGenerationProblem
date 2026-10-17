@@ -63,6 +63,20 @@ public class DelaunayTriangulation : MonoBehaviour
         RemoveSuperTriangleTriangles();
         Debug.Log($"Delaunay triangulation finished: {triangles.Count} triangles.");
     }
+
+    public List<RoomConnection> GetUniqueConnections()
+    {
+        List<RoomConnection> connections = new List<RoomConnection>();
+
+        foreach (DelaunayTriangle triangle in triangles)
+        {
+            AddUniqueConnection(connections, triangle.A, triangle.B);
+            AddUniqueConnection(connections, triangle.B, triangle.C);
+            AddUniqueConnection(connections, triangle.C, triangle.A);
+        }
+
+        return connections;
+    }
     
     private DelaunayTriangle CreateSuperTriangle(List<DelaunayVertex> vertices)
     {
@@ -162,5 +176,20 @@ public class DelaunayTriangulation : MonoBehaviour
             triangle.ContainsVertex(superTriangle.A) || 
             triangle.ContainsVertex(superTriangle.B) ||
             triangle.ContainsVertex(superTriangle.C));
+    }
+
+    private void AddUniqueConnection(List<RoomConnection> connections, DelaunayVertex start, DelaunayVertex end)
+    {
+        RoomConnection candidate = new RoomConnection(start, end);
+
+        foreach (RoomConnection existing in connections)
+        {
+            if (existing.HasSameEndpoints(candidate))
+            {
+                return;
+            }
+        }
+        
+        connections.Add(candidate);
     }
 }

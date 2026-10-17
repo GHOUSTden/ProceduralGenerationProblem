@@ -300,6 +300,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a446437a49f07240a3e52ca37ae4fc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GizmosVisualization
+  visualizeVertices: 1
+  visualizeTriangles: 0
+  visualizeMST: 1
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0

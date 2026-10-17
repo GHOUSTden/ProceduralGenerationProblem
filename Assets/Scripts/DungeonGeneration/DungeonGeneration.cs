@@ -17,6 +17,11 @@ public class DungeonGeneration : MonoBehaviour
     [SerializeField] private DungeonVisualizer dungeonVisualizer;
     [SerializeField] private DelaunayTriangulation delaunayTriangulation;
     [SerializeField] private GizmosVisualization gizmosVisualization;
+
+    private MinimumSpanningTree minimumSpanningTree = new MinimumSpanningTree();
+
+    private List<RoomConnection> delaunayConnections;
+    private List<RoomConnection> mstConnections;
     
     private List<DungeonRoom> rooms;
     private Random random;
@@ -102,9 +107,18 @@ public class DungeonGeneration : MonoBehaviour
         Debug.Log($"All the {vertices.Count} vertices:");
         
         delaunayTriangulation.TriangulateVertices(vertices);
+
+        delaunayConnections = delaunayTriangulation.GetUniqueConnections();
+
+        mstConnections = minimumSpanningTree.Build(vertices, delaunayConnections);
         
         gizmosVisualization.GetVertices(vertices, cellSize);
         gizmosVisualization.GetTriangles(delaunayTriangulation.Triangles);
+        gizmosVisualization.GetMSTConnections(mstConnections);
+        
+        Debug.Log($"Delaunay connections: {delaunayConnections.Count}");
+
+        Debug.Log($"MST connections: {mstConnections.Count}");
     }
     
     private void PlaceRoom(DungeonRoom room)
