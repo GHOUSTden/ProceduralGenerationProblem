@@ -24,12 +24,12 @@ For this project I was using Unity 6.6 for now, but later i planned to use Unity
 ## Sources & Inspiration
 A huge thank you to the creators and resources that made this project possible:
 
-[1] https://vazgriz.com/119/procedurally-generated-dungeons/
+* [1] [Vazgriz - Procedurally Generated Dungeons](https://vazgriz.com/119/procedurally-generated-dungeons/)
 
-[2] https://github.com/vazgriz/DungeonGenerator
+* [2] [Vazgriz's DungeonGenerator GitHub Repo](https://github.com/vazgriz/DungeonGenerator)
 
-[3] https://github.com/dev-rygy/labyrinth-algorithm
+* [3] [Labyrinth Algorithm Repository](https://github.com/dev-rygy/labyrinth-algorithm)
 
-[4] https://en.wikipedia.org/wiki/Delaunay_triangulation
+* [4] [Wikipedia - Delaunay Triangulation](https://en.wikipedia.org/wiki/Delaunay_triangulation)
 
-[5] https://en.wikipedia.org/wiki/Bowyer%E2%80%93Watson_algorithm
+* [5] [Wikipedia - Bowyer–Watson Algorithm](https://en.wikipedia.org/wiki/Bowyer%E2%80%93Watson_algorithm)
