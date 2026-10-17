@@ -13,7 +13,11 @@ Even if this project is especially for my game, i will make here a lot of thing 
 
 # Sources
 [1] https://vazgriz.com/119/procedurally-generated-dungeons/
+
 [2] https://github.com/vazgriz/DungeonGenerator
+
 [3] https://github.com/dev-rygy/labyrinth-algorithm
+
 [4] https://en.wikipedia.org/wiki/Delaunay_triangulation
+
 [5] https://en.wikipedia.org/wiki/Bowyer%E2%80%93Watson_algorithm
