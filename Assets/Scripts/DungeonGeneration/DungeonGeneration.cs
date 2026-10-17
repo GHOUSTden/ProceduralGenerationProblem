@@ -13,6 +13,12 @@ public class DungeonGeneration : MonoBehaviour
     [SerializeField] private Vector2Int roomMaxSize;
     [SerializeField] private Vector2Int roomMinSize;
 
+    [Header("Dungeon Connections")] 
+    [SerializeField, Range(0f, 1f)] private float extraConnectionChance = 0.15f;
+    private CycleConnectionSelector cycleConnectionSelector = new CycleConnectionSelector();
+    private List<RoomConnection> extraConnections;
+    private List<RoomConnection> finalConnections;
+    
     [Header("References")] 
     [SerializeField] private DungeonVisualizer dungeonVisualizer;
     [SerializeField] private DelaunayTriangulation delaunayTriangulation;
@@ -111,14 +117,21 @@ public class DungeonGeneration : MonoBehaviour
         delaunayConnections = delaunayTriangulation.GetUniqueConnections();
 
         mstConnections = minimumSpanningTree.Build(vertices, delaunayConnections);
+
+        extraConnections = cycleConnectionSelector.SelectExtraConnections(delaunayConnections, mstConnections, extraConnectionChance, random);
+
+        finalConnections = new List<RoomConnection>(mstConnections);
+        finalConnections.AddRange(extraConnections);
         
         gizmosVisualization.GetVertices(vertices, cellSize);
         gizmosVisualization.GetTriangles(delaunayTriangulation.Triangles);
         gizmosVisualization.GetMSTConnections(mstConnections);
+        gizmosVisualization.GetExtraConnections(extraConnections);
         
         Debug.Log($"Delaunay connections: {delaunayConnections.Count}");
-
         Debug.Log($"MST connections: {mstConnections.Count}");
+        Debug.Log($"Extra connections: {extraConnections.Count}");
+        Debug.Log($"Final connections: {finalConnections.Count}");
     }
     
     private void PlaceRoom(DungeonRoom room)
