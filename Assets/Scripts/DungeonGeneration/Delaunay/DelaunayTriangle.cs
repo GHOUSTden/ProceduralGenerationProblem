@@ -43,14 +43,14 @@ public class DelaunayTriangle
              pointCSquared * (pointA.y - pointB.y)) / denomination;
         
         float circumcenterY =
-            (pointASquared * (pointC.y - pointB.y) + 
-             pointBSquared * (pointA.y - pointC.y) +
-             pointCSquared * (pointB.y - pointA.y)) / denomination;
+            (pointASquared * (pointC.x - pointB.x) + 
+             pointBSquared * (pointA.x - pointC.x) +
+             pointCSquared * (pointB.x - pointA.x)) / denomination;
 
         Vector2 circumcenter = new Vector2(circumcenterX, circumcenterY);
 
         float radiusSquared = (pointA - circumcenter).sqrMagnitude;
-
+        
         float candidateDistanceSquared = (candidateVertex.Coordinate - circumcenter).sqrMagnitude;
 
         return candidateDistanceSquared <= radiusSquared;
