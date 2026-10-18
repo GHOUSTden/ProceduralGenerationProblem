@@ -4,6 +4,7 @@ public enum CellType
 {
     Room,
     Hallway,
+    Unique
 }
 
 public class DungeonCell

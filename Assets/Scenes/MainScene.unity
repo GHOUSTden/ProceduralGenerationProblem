@@ -606,6 +606,7 @@ MonoBehaviour:
   dungeonGeneration: {fileID: 2098457209}
   roomCubePrefab: {fileID: 3398191369702747071, guid: afc64919acb987c4ab604e66cdb44805, type: 3}
   hallwayCubePrefab: {fileID: 8008973965546820877, guid: fce73d40b8ce4c74d859b9eb2853ec2b, type: 3}
+  uniqueRoomCubePrefab: {fileID: 0}
 --- !u!1 &2098457208
 GameObject:
   m_ObjectHideFlags: 0
@@ -639,9 +640,11 @@ MonoBehaviour:
   dungeonDepth: 50
   cellSize: 1
   floorHeight: 1
-  roomPlacementAttempts: 15
+  roomPlacementAttempts: 1500
   roomMaxSize: {x: 8, y: 6}
   roomMinSize: {x: 2, y: 2}
+  uniqueRooms:
+  - {fileID: 11400000, guid: be0c4b23779fd4947abd0d4760b112ed, type: 2}
   currentSeed: 0
   isCustomSeed: 0
   customSeed: 10

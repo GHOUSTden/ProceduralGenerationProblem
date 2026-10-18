@@ -12,6 +12,7 @@ public class DungeonGeneration : MonoBehaviour
     [SerializeField] private int roomPlacementAttempts;
     [SerializeField] private Vector2Int roomMaxSize;
     [SerializeField] private Vector2Int roomMinSize;
+    [SerializeField] private List<UniqueRoomScriptableObject> uniqueRooms;
 
     [Header("Seed Generation")] 
     [SerializeField] private int currentSeed = 0;
@@ -59,12 +60,41 @@ public class DungeonGeneration : MonoBehaviour
         random = new Random(currentSeed);
         rooms = new List<DungeonRoom>();
         
-        PlaceRooms();
+        PlaceUniqueRooms();
+        PlaceRegularRooms();
         Triangulate();
         GenerateHallways();
     }
+
+    private void PlaceUniqueRooms()
+    {
+        foreach (UniqueRoomScriptableObject uniqueRoomSO in uniqueRooms)
+        {
+            Vector2Int location = new Vector2Int(0, 0);
+            
+            if (uniqueRoomSO.PlacementRule == PlacementRule.Fixed)
+            {
+                location = uniqueRoomSO.FixedCoordinates;
+            }
+
+            Vector2Int roomSize = uniqueRoomSO.RoomSize;
+
+            DungeonRoom candidateRoom = new DungeonRoom();
+            candidateRoom.bounds.position = location;
+            candidateRoom.bounds.size = roomSize;
+
+            /*DungeonRoom bufferRoom = new DungeonRoom();
+            bufferRoom.bounds.position = location + new Vector2Int(-1, -1);
+            bufferRoom.bounds.size = roomSize + new Vector2Int(2, 2);*/
+            
+            candidateRoom.GenerateCells();
+            
+            rooms.Add(candidateRoom);
+            PlaceRoom(candidateRoom);
+        }
+    }
     
-    private void PlaceRooms()
+    private void PlaceRegularRooms()
     {
         for (int i = 0; i < roomPlacementAttempts; i++)
         {
