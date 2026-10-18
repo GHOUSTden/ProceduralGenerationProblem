@@ -639,9 +639,12 @@ MonoBehaviour:
   dungeonDepth: 50
   cellSize: 1
   floorHeight: 1
-  roomCount: 15
+  roomPlacementAttempts: 15
   roomMaxSize: {x: 8, y: 6}
   roomMinSize: {x: 2, y: 2}
+  currentSeed: 0
+  isCustomSeed: 0
+  customSeed: 10
   extraConnectionChance: 0.15
   dungeonVisualizer: {fileID: 1725333378}
   delaunayTriangulation: {fileID: 1097125171}

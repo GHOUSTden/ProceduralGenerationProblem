@@ -13,6 +13,11 @@ public class DungeonGeneration : MonoBehaviour
     [SerializeField] private Vector2Int roomMaxSize;
     [SerializeField] private Vector2Int roomMinSize;
 
+    [Header("Seed Generation")] 
+    [SerializeField] private int currentSeed = 0;
+    [SerializeField] private bool isCustomSeed = false;
+    [SerializeField] private int customSeed = 10;
+    
     [Header("Dungeon Connections")] 
     [SerializeField, Range(0f, 1f)] private float extraConnectionChance = 0.15f;
     private CycleConnectionSelector cycleConnectionSelector = new CycleConnectionSelector();
@@ -41,7 +46,17 @@ public class DungeonGeneration : MonoBehaviour
 
     private void Generate()
     {
-        random = new Random(10);
+        if (isCustomSeed)
+        {
+            currentSeed = customSeed;
+        }
+        else
+        {
+            random = new Random();
+            currentSeed = random.Next();
+        }
+
+        random = new Random(currentSeed);
         rooms = new List<DungeonRoom>();
         
         PlaceRooms();
