@@ -9,7 +9,7 @@ public class DungeonGeneration : MonoBehaviour
     [SerializeField] private int dungeonDepth;
     public float cellSize;
     public float floorHeight;
-    [SerializeField] private int roomCount;
+    [SerializeField] private int roomPlacementAttempts;
     [SerializeField] private Vector2Int roomMaxSize;
     [SerializeField] private Vector2Int roomMinSize;
 
@@ -51,7 +51,7 @@ public class DungeonGeneration : MonoBehaviour
     
     private void PlaceRooms()
     {
-        for (int i = 0; i < roomCount; i++)
+        for (int i = 0; i < roomPlacementAttempts; i++)
         {
             Vector2Int location = new Vector2Int(
                 random.Next(0, dungeonWidth), 
