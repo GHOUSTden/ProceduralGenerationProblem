@@ -1,7 +1,9 @@
+using System;
 using UnityEngine;
 using System.Collections.Generic;
 using Random = System.Random;
 
+[Serializable]
 public class DungeonGeneration : MonoBehaviour
 {
     [Header("Dungeon Settings")]
@@ -12,8 +14,8 @@ public class DungeonGeneration : MonoBehaviour
     [SerializeField] private int roomPlacementAttempts;
     [SerializeField] private Vector2Int roomMaxSize;
     [SerializeField] private Vector2Int roomMinSize;
-    [SerializeField] private List<UniqueRoomScriptableObject> uniqueRooms;
-
+    [SerializeField] private List<RoomScriptableObject> uniqueRooms;
+    
     [Header("Seed Generation")] 
     [SerializeField] private int currentSeed = 0;
     [SerializeField] private bool isCustomSeed = false;
@@ -68,24 +70,20 @@ public class DungeonGeneration : MonoBehaviour
 
     private void PlaceUniqueRooms()
     {
-        foreach (UniqueRoomScriptableObject uniqueRoomSO in uniqueRooms)
+        foreach (RoomScriptableObject uniqueRoom in uniqueRooms)
         {
             Vector2Int location = new Vector2Int(0, 0);
             
-            if (uniqueRoomSO.PlacementRule == PlacementRule.Fixed)
+            if (uniqueRoom.PlacementRule == PlacementRule.Fixed)
             {
-                location = uniqueRoomSO.FixedCoordinates;
+                location = uniqueRoom.FixedCoordinates;
             }
 
-            Vector2Int roomSize = uniqueRoomSO.RoomSize;
+            Vector2Int roomSize = uniqueRoom.RoomSize;
 
             DungeonRoom candidateRoom = new DungeonRoom();
             candidateRoom.bounds.position = location;
             candidateRoom.bounds.size = roomSize;
-
-            /*DungeonRoom bufferRoom = new DungeonRoom();
-            bufferRoom.bounds.position = location + new Vector2Int(-1, -1);
-            bufferRoom.bounds.size = roomSize + new Vector2Int(2, 2);*/
             
             candidateRoom.GenerateCells();
             

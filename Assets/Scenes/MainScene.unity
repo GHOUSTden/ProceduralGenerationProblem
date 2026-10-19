@@ -640,13 +640,13 @@ MonoBehaviour:
   dungeonDepth: 50
   cellSize: 1
   floorHeight: 1
-  roomPlacementAttempts: 1500
+  roomPlacementAttempts: 15
   roomMaxSize: {x: 8, y: 6}
   roomMinSize: {x: 2, y: 2}
   uniqueRooms:
-  - {fileID: 11400000, guid: be0c4b23779fd4947abd0d4760b112ed, type: 2}
+  - {fileID: 11400000, guid: 0e8297afab8017048810d566f69aea62, type: 2}
   currentSeed: 0
-  isCustomSeed: 0
+  isCustomSeed: 1
   customSeed: 10
   extraConnectionChance: 0.15
   dungeonVisualizer: {fileID: 1725333378}
