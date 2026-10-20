@@ -636,11 +636,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8890e49a771dff1428430c18f85b06f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DungeonGeneration
-  dungeonWidth: 50
-  dungeonDepth: 50
+  dungeonBounds:
+    x: 50
+    y: 50
+    width: 0
+    height: 0
   cellSize: 1
   floorHeight: 1
-  roomPlacementAttempts: 15
+  roomPlacementAttempts: 150
   roomMaxSize: {x: 8, y: 6}
   roomMinSize: {x: 2, y: 2}
   uniqueRooms:

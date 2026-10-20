@@ -6,9 +6,8 @@ using Random = System.Random;
 [Serializable]
 public class DungeonGeneration : MonoBehaviour
 {
-    [Header("Dungeon Settings")]
-    [SerializeField] private int dungeonWidth;
-    [SerializeField] private int dungeonDepth;
+    [Header("Dungeon Settings")] 
+    [SerializeField] private RectInt dungeonBounds;
     public float cellSize;
     public float floorHeight;
     [SerializeField] private int roomPlacementAttempts;
@@ -72,13 +71,20 @@ public class DungeonGeneration : MonoBehaviour
     {
         foreach (RoomScriptableObject uniqueRoom in uniqueRooms)
         {
-            Vector2Int location = new Vector2Int(0, 0);
+            Vector2Int location = new Vector2Int(
+                random.Next(0, dungeonBounds.position.x), 
+                random.Next(0, dungeonBounds.position.y));
             
             if (uniqueRoom.PlacementRule == PlacementRule.Fixed)
             {
                 location = uniqueRoom.FixedCoordinates;
             }
 
+            if (uniqueRoom.PlacementRule == PlacementRule.Left || uniqueRoom.PlacementRule == PlacementRule.Right || uniqueRoom.PlacementRule == PlacementRule.Top || uniqueRoom.PlacementRule == PlacementRule.Down || uniqueRoom.PlacementRule == PlacementRule.Center)
+            {
+                
+            }
+                
             Vector2Int roomSize = uniqueRoom.RoomSize;
 
             bool isValid = true;
@@ -104,7 +110,7 @@ public class DungeonGeneration : MonoBehaviour
 
             foreach (var cell in candidateRoom.cells)
             {
-                if (cell.coordinates.x < 0 || cell.coordinates.x > dungeonWidth || cell.coordinates.y < 0 || cell.coordinates.y > dungeonDepth)
+                if (cell.coordinates.x < 0 || cell.coordinates.x > dungeonBounds.position.x || cell.coordinates.y < 0 || cell.coordinates.y > dungeonBounds.position.y)
                 {
                     isValid = false;
                     break;
@@ -124,8 +130,8 @@ public class DungeonGeneration : MonoBehaviour
         for (int i = 0; i < roomPlacementAttempts; i++)
         {
             Vector2Int location = new Vector2Int(
-                random.Next(0, dungeonWidth), 
-                random.Next(0, dungeonDepth));
+                random.Next(0, dungeonBounds.position.x), 
+                random.Next(0, dungeonBounds.position.y));
 
             Vector2Int roomSize = new Vector2Int(
                 random.Next(roomMinSize.x, roomMaxSize.x + 1),
@@ -154,7 +160,7 @@ public class DungeonGeneration : MonoBehaviour
 
             foreach (var cell in candidateRoom.cells)
             {
-                if (cell.coordinates.x < 0 || cell.coordinates.x > dungeonWidth || cell.coordinates.y < 0 || cell.coordinates.y > dungeonDepth)
+                if (cell.coordinates.x < 0 || cell.coordinates.x > dungeonBounds.position.x || cell.coordinates.y < 0 || cell.coordinates.y > dungeonBounds.position.y)
                 {
                     isValid = false;
                     break;
@@ -249,7 +255,7 @@ public class DungeonGeneration : MonoBehaviour
             Vector2Int start = GetRoomGridCenter(startRoom);
             Vector2Int goal = GetRoomGridCenter(endRoom);
 
-            List<Vector2Int> path = aStarPathfinder.FindPath(start, goal, blockedCells, dungeonWidth, dungeonDepth);
+            List<Vector2Int> path = aStarPathfinder.FindPath(start, goal, blockedCells, dungeonBounds.position.x, dungeonBounds.position.y);
 
             if (path.Count == 0)
             {
@@ -300,6 +306,11 @@ public class DungeonGeneration : MonoBehaviour
 
         return roomCoordinates;
     }
+
+    /*private RectInt GetDungeonBounds()
+    {
+        
+    }*/
     
     private Vector2Int GetRoomGridCenter(DungeonRoom room)
     {
