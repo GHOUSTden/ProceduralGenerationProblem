@@ -84,8 +84,9 @@ public class DungeonGeneration : MonoBehaviour
             DungeonRoom candidateRoom = new DungeonRoom();
             candidateRoom.bounds.position = location;
             candidateRoom.bounds.size = roomSize;
+            CellType cellType = CellType.Unique;
             
-            candidateRoom.GenerateCells();
+            candidateRoom.GenerateCells(cellType);
             
             rooms.Add(candidateRoom);
             PlaceRoom(candidateRoom);
@@ -122,8 +123,10 @@ public class DungeonGeneration : MonoBehaviour
                     break;
                 }
             }
+
+            CellType cellType = CellType.Room;
             
-            candidateRoom.GenerateCells();
+            candidateRoom.GenerateCells(cellType);
 
             foreach (var cell in candidateRoom.cells)
             {

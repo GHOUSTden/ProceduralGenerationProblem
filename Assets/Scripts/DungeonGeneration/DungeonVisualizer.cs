@@ -15,17 +15,17 @@ public class DungeonVisualizer : MonoBehaviour
             cellCoordinates.x * dungeonGeneration.cellSize,
             0,
             cellCoordinates.y * dungeonGeneration.cellSize);
-
+        
         switch (cell.cellType)
         {
             case CellType.Room:
                 Instantiate(roomCubePrefab, cellWorldPos, Quaternion.identity);
                 break;
-            case CellType.Unique:
-                Instantiate(uniqueRoomCubePrefab, cellWorldPos, Quaternion.identity);
-                break;
             case CellType.Hallway:
                 Instantiate(hallwayCubePrefab, cellWorldPos, Quaternion.identity);
+                break;
+            case CellType.Unique:
+                Instantiate(uniqueRoomCubePrefab, cellWorldPos, Quaternion.identity);
                 break;
         }
     }
