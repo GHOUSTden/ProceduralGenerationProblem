@@ -6,7 +6,7 @@ public class DungeonRoom
     public RectInt bounds;
     public List<DungeonCell> cells = new List<DungeonCell>();
 
-    public void GenerateCells()
+    public void GenerateCells(CellType cellType)
     {
         cells.Clear();
         
@@ -22,7 +22,7 @@ public class DungeonRoom
 
                 cell.coordinates = takenCoordinates;
                 cell.isOccupied = true;
-                cell.cellType = CellType.Room;
+                cell.cellType = cellType;
                 
                 cells.Add(cell);
             }

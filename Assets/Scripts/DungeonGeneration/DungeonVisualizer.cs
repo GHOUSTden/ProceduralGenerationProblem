@@ -6,6 +6,7 @@ public class DungeonVisualizer : MonoBehaviour
     [SerializeField] private DungeonGeneration dungeonGeneration;
     [SerializeField] private GameObject roomCubePrefab;
     [SerializeField] private GameObject hallwayCubePrefab;
+    [SerializeField] private GameObject uniqueRoomCubePrefab;
     
     public void VisualizeCell(DungeonCell cell)
     {
@@ -14,7 +15,7 @@ public class DungeonVisualizer : MonoBehaviour
             cellCoordinates.x * dungeonGeneration.cellSize,
             0,
             cellCoordinates.y * dungeonGeneration.cellSize);
-
+        
         switch (cell.cellType)
         {
             case CellType.Room:
@@ -22,6 +23,9 @@ public class DungeonVisualizer : MonoBehaviour
                 break;
             case CellType.Hallway:
                 Instantiate(hallwayCubePrefab, cellWorldPos, Quaternion.identity);
+                break;
+            case CellType.Unique:
+                Instantiate(uniqueRoomCubePrefab, cellWorldPos, Quaternion.identity);
                 break;
         }
     }
