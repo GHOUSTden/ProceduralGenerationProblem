@@ -81,15 +81,41 @@ public class DungeonGeneration : MonoBehaviour
 
             Vector2Int roomSize = uniqueRoom.RoomSize;
 
+            bool isValid = true;
+            
             DungeonRoom candidateRoom = new DungeonRoom();
             candidateRoom.bounds.position = location;
             candidateRoom.bounds.size = roomSize;
-            CellType cellType = CellType.Unique;
             
-            candidateRoom.GenerateCells(cellType);
+            DungeonRoom bufferRoom = new DungeonRoom();
+            bufferRoom.bounds.position = location + new Vector2Int(-1, -1);
+            bufferRoom.bounds.size = roomSize + new Vector2Int(2, 2);
             
-            rooms.Add(candidateRoom);
-            PlaceRoom(candidateRoom);
+            foreach (var room in rooms)
+            {
+                if (room.CheckRoomIntersect(bufferRoom))
+                {
+                    isValid = false;
+                    break;
+                }
+            }
+            
+            candidateRoom.GenerateCells(CellType.Unique);
+
+            foreach (var cell in candidateRoom.cells)
+            {
+                if (cell.coordinates.x < 0 || cell.coordinates.x > dungeonWidth || cell.coordinates.y < 0 || cell.coordinates.y > dungeonDepth)
+                {
+                    isValid = false;
+                    break;
+                }
+            }
+            
+            if (isValid)
+            {
+                rooms.Add(candidateRoom);
+                PlaceRoom(candidateRoom);
+            }
         }
     }
     
@@ -123,10 +149,8 @@ public class DungeonGeneration : MonoBehaviour
                     break;
                 }
             }
-
-            CellType cellType = CellType.Room;
             
-            candidateRoom.GenerateCells(cellType);
+            candidateRoom.GenerateCells(CellType.Room);
 
             foreach (var cell in candidateRoom.cells)
             {

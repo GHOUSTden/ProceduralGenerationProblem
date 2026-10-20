@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc5d5cd35d9b4ab40a0b0c443dc85b2a, type: 3}
   m_Name: BossTest
   m_EditorClassIdentifier: Assembly-CSharp::RoomScriptableObject
-  roomType: 0
+  roomType: 2
   placementRule: 0
-  fixedCoordinates: {x: 0, y: 0}
-  roomSize: {x: 0, y: 0}
+  fixedCoordinates: {x: 25, y: 35}
+  roomSize: {x: 10, y: 15}

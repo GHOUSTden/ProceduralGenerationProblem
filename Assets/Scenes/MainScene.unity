@@ -606,7 +606,7 @@ MonoBehaviour:
   dungeonGeneration: {fileID: 2098457209}
   roomCubePrefab: {fileID: 3398191369702747071, guid: afc64919acb987c4ab604e66cdb44805, type: 3}
   hallwayCubePrefab: {fileID: 8008973965546820877, guid: fce73d40b8ce4c74d859b9eb2853ec2b, type: 3}
-  uniqueRoomCubePrefab: {fileID: 0}
+  uniqueRoomCubePrefab: {fileID: 6912885421475612700, guid: 362b00594086c5241b85d71dac83f797, type: 3}
 --- !u!1 &2098457208
 GameObject:
   m_ObjectHideFlags: 0
@@ -645,6 +645,7 @@ MonoBehaviour:
   roomMinSize: {x: 2, y: 2}
   uniqueRooms:
   - {fileID: 11400000, guid: 0e8297afab8017048810d566f69aea62, type: 2}
+  - {fileID: 11400000, guid: 700dfa5fae98489408090fd8e78b6805, type: 2}
   currentSeed: 0
   isCustomSeed: 1
   customSeed: 10
