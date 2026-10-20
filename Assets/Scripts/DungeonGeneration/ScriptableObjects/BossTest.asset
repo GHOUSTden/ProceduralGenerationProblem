@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: BossTest
   m_EditorClassIdentifier: Assembly-CSharp::RoomScriptableObject
   roomType: 2
-  placementRule: 1
+  placementRule: 4
   fixedCoordinates: {x: 25, y: 35}
   roomSize: {x: 10, y: 15}

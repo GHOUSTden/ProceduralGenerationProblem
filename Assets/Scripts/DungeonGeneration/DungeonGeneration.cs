@@ -82,7 +82,7 @@ public class DungeonGeneration : MonoBehaviour
 
             if (uniqueRoom.PlacementRule == PlacementRule.Left || uniqueRoom.PlacementRule == PlacementRule.Right || uniqueRoom.PlacementRule == PlacementRule.Top || uniqueRoom.PlacementRule == PlacementRule.Down || uniqueRoom.PlacementRule == PlacementRule.Center)
             {
-                
+                location = GetDungeonBounds(uniqueRoom.PlacementRule, uniqueRoom.RoomSize);
             }
                 
             Vector2Int roomSize = uniqueRoom.RoomSize;
@@ -307,10 +307,45 @@ public class DungeonGeneration : MonoBehaviour
         return roomCoordinates;
     }
 
-    /*private RectInt GetDungeonBounds()
+    private Vector2Int GetDungeonBounds(PlacementRule placementRule, Vector2Int roomSize)
     {
+        int minX = 0;
+        int maxX = dungeonBounds.xMax - roomSize.x;
+                
+        int minY = 0;
+        int maxY = dungeonBounds.yMax - roomSize.y;
         
-    }*/
+        switch (placementRule)
+        {
+            case PlacementRule.Left:
+                maxX = dungeonBounds.xMax / 2 - roomSize.x;
+                break;
+            case PlacementRule.Right:
+                minX = dungeonBounds.xMax / 2;
+                break;
+            case PlacementRule.Top:
+                minY = dungeonBounds.yMax / 2;
+                break;
+            case PlacementRule.Down:
+                maxY = dungeonBounds.yMax / 2 - roomSize.y;
+                break;
+            case PlacementRule.Center:
+                minX = dungeonBounds.xMax / 4;
+                maxX = dungeonBounds.xMax - minX - roomSize.x;
+
+                minY = dungeonBounds.yMax / 4;
+                maxY = dungeonBounds.yMax - minY - roomSize.y;
+                break;
+        }
+
+        // Debug.Log($"Calculated Bounds For Placement Rule - {placementRule}: XMin - {minX}, XMax - {maxX}, YMin - {minY}, YMax - {maxY}.");
+        
+        Vector2Int finalCoordinates = new Vector2Int(
+            random.Next(minX, maxX + 1), 
+            random.Next(minY, maxY + 1));
+        
+        return finalCoordinates;
+    }
     
     private Vector2Int GetRoomGridCenter(DungeonRoom room)
     {
