@@ -7,17 +7,23 @@ public class GizmosVisualization : MonoBehaviour
     private List<DelaunayVertex> roomCenters;
 
     private IReadOnlyList<DelaunayTriangle> triangles;
-    
+
     private IReadOnlyList<RoomConnection> mstConnections;
-    
+
     private IReadOnlyList<RoomConnection> extraConnections;
 
+    private int specifiedMaxX;
+    private int specifiedMaxY;
+    private int specifiedMinX;
+    private int specifiedMinY;
+    
     private float cellSize = 1f;
 
     public bool visualizeVertices = true;
     public bool visualizeTriangles = true;
     public bool visualizeMST = true;
     public bool visualizeExtraConnections = true;
+    public bool visualizeSpecialPlacementRule = true;
     
     public void GetVertices(List<DelaunayVertex> vertices, float currentCellSize)
     {
@@ -39,14 +45,27 @@ public class GizmosVisualization : MonoBehaviour
     {
         extraConnections = connections;
     }
+
+    public void GetSpecifiedPlacementRule(int minX, int minY, int maxX, int maxY)
+    {
+        specifiedMinX = minX;
+        specifiedMaxX = maxX;
+        specifiedMaxY = maxY;
+        specifiedMinY = minY;
+    }
     
     private void OnDrawGizmos()
     {
+        if (visualizeSpecialPlacementRule)
+        {
+            GizmosVisualizeSpecialPlacementRule();
+        }
+        
         if (visualizeTriangles)
         {
             GizmosVisualizeTriangles();
         }
-
+        
         if (visualizeMST)
         {
             GizmosVisualizeMSTConnections();
@@ -138,5 +157,20 @@ public class GizmosVisualization : MonoBehaviour
             
             Gizmos.DrawLine(start, end);
         }
+    }
+
+    private void GizmosVisualizeSpecialPlacementRule()
+    {
+        if (specifiedMaxX == null || specifiedMaxY == null || specifiedMinX == null || specifiedMinY == null)
+        {
+            return;
+        }
+
+        Gizmos.color = Color.red;
+        
+        Vector3 center = new Vector3(Mathf.FloorToInt((specifiedMinX + specifiedMaxX - 1) / 2f), 0f, Mathf.FloorToInt((specifiedMaxY + specifiedMinY - 1) / 2f));
+        Vector3 size = new Vector3(specifiedMaxX, 1f, specifiedMaxY);
+        
+        Gizmos.DrawWireCube(center, size);
     }
 }

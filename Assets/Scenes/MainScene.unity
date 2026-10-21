@@ -304,6 +304,7 @@ MonoBehaviour:
   visualizeTriangles: 1
   visualizeMST: 1
   visualizeExtraConnections: 1
+  visualizeSpecialPlacementRule: 1
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -650,7 +651,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0e8297afab8017048810d566f69aea62, type: 2}
   - {fileID: 11400000, guid: 700dfa5fae98489408090fd8e78b6805, type: 2}
   currentSeed: 0
-  isCustomSeed: 1
+  isCustomSeed: 0
   customSeed: 10
   extraConnectionChance: 0.15
   dungeonVisualizer: {fileID: 1725333378}
