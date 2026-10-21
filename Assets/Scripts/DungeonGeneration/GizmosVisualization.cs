@@ -7,17 +7,22 @@ public class GizmosVisualization : MonoBehaviour
     private List<DelaunayVertex> roomCenters;
 
     private IReadOnlyList<DelaunayTriangle> triangles;
-    
+
     private IReadOnlyList<RoomConnection> mstConnections;
-    
+
     private IReadOnlyList<RoomConnection> extraConnections;
 
+    private RectInt dungeonBounds;
+    
     private float cellSize = 1f;
 
     public bool visualizeVertices = true;
     public bool visualizeTriangles = true;
     public bool visualizeMST = true;
     public bool visualizeExtraConnections = true;
+    
+    public PlacementRule placementRule;
+    public bool visualizeSpecialPlacementRule = true;
     
     public void GetVertices(List<DelaunayVertex> vertices, float currentCellSize)
     {
@@ -39,14 +44,24 @@ public class GizmosVisualization : MonoBehaviour
     {
         extraConnections = connections;
     }
+
+    public void GetDungeonBounds(RectInt db)
+    {
+        dungeonBounds = db;
+    }
     
     private void OnDrawGizmos()
     {
+        if (visualizeSpecialPlacementRule)
+        {
+            GizmosVisualizeSpecialPlacementRule();
+        }
+        
         if (visualizeTriangles)
         {
             GizmosVisualizeTriangles();
         }
-
+        
         if (visualizeMST)
         {
             GizmosVisualizeMSTConnections();
@@ -138,5 +153,49 @@ public class GizmosVisualization : MonoBehaviour
             
             Gizmos.DrawLine(start, end);
         }
+    }
+
+    private void GizmosVisualizeSpecialPlacementRule()
+    {
+        if (dungeonBounds == null || placementRule == PlacementRule.Fixed || placementRule == PlacementRule.Random)
+        {
+            return;
+        }
+
+        int minX = 0;
+        int maxX = dungeonBounds.xMax;
+                
+        int minY = 0;
+        int maxY = dungeonBounds.yMax;
+        
+        Gizmos.color = Color.red;
+
+        switch (placementRule)
+        {
+            case PlacementRule.Left:
+                maxX = dungeonBounds.xMax / 2;
+                break;
+            case PlacementRule.Right:
+                minX = dungeonBounds.xMax / 2;
+                break;
+            case PlacementRule.Top:
+                minY = dungeonBounds.yMax / 2;
+                break;
+            case PlacementRule.Down:
+                maxY = dungeonBounds.yMax / 2;
+                break;
+            case PlacementRule.Center:
+                minX = dungeonBounds.xMax / 4;
+                maxX = dungeonBounds.xMax - minX;
+
+                minY = dungeonBounds.yMax / 4;
+                maxY = dungeonBounds.yMax - minY;
+                break;
+        }
+        
+        Vector3 center = new Vector3(Mathf.FloorToInt((minX + maxX - 1) / 2f), 0f, Mathf.FloorToInt((minY + maxY - 1) / 2f));
+        Vector3 size = new Vector3(maxX - minX + 1f, 1f, maxY - minY + 1f);
+        
+        Gizmos.DrawWireCube(center, size);
     }
 }

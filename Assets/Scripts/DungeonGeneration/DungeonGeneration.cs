@@ -61,6 +61,8 @@ public class DungeonGeneration : MonoBehaviour
         random = new Random(currentSeed);
         rooms = new List<DungeonRoom>();
         
+        gizmosVisualization.GetDungeonBounds(dungeonBounds);
+        
         PlaceUniqueRooms();
         PlaceRegularRooms();
         Triangulate();
