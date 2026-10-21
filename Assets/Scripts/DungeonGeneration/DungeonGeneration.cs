@@ -340,7 +340,7 @@ public class DungeonGeneration : MonoBehaviour
 
         // Debug.Log($"Calculated Bounds For Placement Rule - {placementRule}: XMin - {minX}, XMax - {maxX}, YMin - {minY}, YMax - {maxY}.");
         
-        gizmosVisualization.GetSpecifiedPlacementRule(minX, minY, maxX, maxY);
+        gizmosVisualization.GetSpecifiedPlacementRule(minX, minY, maxX + roomSize.x, maxY + roomSize.y);
         
         Vector2Int finalCoordinates = new Vector2Int(
             random.Next(minX, maxX + 1), 

@@ -169,7 +169,7 @@ public class GizmosVisualization : MonoBehaviour
         Gizmos.color = Color.red;
         
         Vector3 center = new Vector3(Mathf.FloorToInt((specifiedMinX + specifiedMaxX - 1) / 2f), 0f, Mathf.FloorToInt((specifiedMaxY + specifiedMinY - 1) / 2f));
-        Vector3 size = new Vector3(specifiedMaxX - specifiedMinX, 1f, specifiedMaxY - specifiedMinY);
+        Vector3 size = new Vector3(specifiedMaxX - specifiedMinX + 1f, 1f, specifiedMaxY - specifiedMinY + 1f);
         
         Gizmos.DrawWireCube(center, size);
     }
