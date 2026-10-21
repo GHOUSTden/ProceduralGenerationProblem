@@ -12,10 +12,7 @@ public class GizmosVisualization : MonoBehaviour
 
     private IReadOnlyList<RoomConnection> extraConnections;
 
-    private int specifiedMaxX;
-    private int specifiedMaxY;
-    private int specifiedMinX;
-    private int specifiedMinY;
+    private RectInt dungeonBounds;
     
     private float cellSize = 1f;
 
@@ -23,6 +20,8 @@ public class GizmosVisualization : MonoBehaviour
     public bool visualizeTriangles = true;
     public bool visualizeMST = true;
     public bool visualizeExtraConnections = true;
+    
+    public PlacementRule placementRule;
     public bool visualizeSpecialPlacementRule = true;
     
     public void GetVertices(List<DelaunayVertex> vertices, float currentCellSize)
@@ -46,12 +45,9 @@ public class GizmosVisualization : MonoBehaviour
         extraConnections = connections;
     }
 
-    public void GetSpecifiedPlacementRule(int minX, int minY, int maxX, int maxY)
+    public void GetDungeonBounds(RectInt db)
     {
-        specifiedMinX = minX;
-        specifiedMaxX = maxX;
-        specifiedMaxY = maxY;
-        specifiedMinY = minY;
+        dungeonBounds = db;
     }
     
     private void OnDrawGizmos()
@@ -159,17 +155,47 @@ public class GizmosVisualization : MonoBehaviour
         }
     }
 
+    // TODO: Use only dungeonBounds and placementRule to dynamically change the visualization.
     private void GizmosVisualizeSpecialPlacementRule()
     {
-        if (specifiedMaxX == null || specifiedMaxY == null || specifiedMinX == null || specifiedMinY == null)
+        if (dungeonBounds == null || placementRule == PlacementRule.Fixed || placementRule == PlacementRule.Random)
         {
             return;
         }
 
-        Gizmos.color = Color.red;
+        int minX = 0;
+        int maxX = dungeonBounds.xMax;
+                
+        int minY = 0;
+        int maxY = dungeonBounds.yMax;
         
-        Vector3 center = new Vector3(Mathf.FloorToInt((specifiedMinX + specifiedMaxX - 1) / 2f), 0f, Mathf.FloorToInt((specifiedMaxY + specifiedMinY - 1) / 2f));
-        Vector3 size = new Vector3(specifiedMaxX - specifiedMinX + 1f, 1f, specifiedMaxY - specifiedMinY + 1f);
+        Gizmos.color = Color.red;
+
+        switch (placementRule)
+        {
+            case PlacementRule.Left:
+                maxX = dungeonBounds.xMax / 2;
+                break;
+            case PlacementRule.Right:
+                minX = dungeonBounds.xMax / 2;
+                break;
+            case PlacementRule.Top:
+                minY = dungeonBounds.yMax / 2;
+                break;
+            case PlacementRule.Down:
+                maxY = dungeonBounds.yMax / 2;
+                break;
+            case PlacementRule.Center:
+                minX = dungeonBounds.xMax / 4;
+                maxX = dungeonBounds.xMax - minX;
+
+                minY = dungeonBounds.yMax / 4;
+                maxY = dungeonBounds.yMax - minY;
+                break;
+        }
+        
+        Vector3 center = new Vector3(Mathf.FloorToInt((minX + maxX - 1) / 2f), 0f, Mathf.FloorToInt((minY + maxY - 1) / 2f));
+        Vector3 size = new Vector3(maxX - minX + 1f, 1f, maxY - minY + 1f);
         
         Gizmos.DrawWireCube(center, size);
     }

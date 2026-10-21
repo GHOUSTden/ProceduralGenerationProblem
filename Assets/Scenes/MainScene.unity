@@ -304,6 +304,7 @@ MonoBehaviour:
   visualizeTriangles: 1
   visualizeMST: 1
   visualizeExtraConnections: 1
+  placementRule: 3
   visualizeSpecialPlacementRule: 1
 --- !u!1 &410087039
 GameObject:
