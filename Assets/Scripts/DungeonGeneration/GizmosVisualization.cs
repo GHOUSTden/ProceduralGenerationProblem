@@ -155,7 +155,6 @@ public class GizmosVisualization : MonoBehaviour
         }
     }
 
-    // TODO: Use only dungeonBounds and placementRule to dynamically change the visualization.
     private void GizmosVisualizeSpecialPlacementRule()
     {
         if (dungeonBounds == null || placementRule == PlacementRule.Fixed || placementRule == PlacementRule.Random)
