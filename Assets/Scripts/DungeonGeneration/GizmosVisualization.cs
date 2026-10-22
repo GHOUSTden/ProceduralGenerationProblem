@@ -193,8 +193,8 @@ public class GizmosVisualization : MonoBehaviour
                 break;
         }
         
-        Vector3 center = new Vector3(Mathf.FloorToInt((minX + maxX - 1) / 2f), 0f, Mathf.FloorToInt((minY + maxY - 1) / 2f));
-        Vector3 size = new Vector3(maxX - minX + 1f, 1f, maxY - minY + 1f);
+        Vector3 center = new Vector3(Mathf.FloorToInt((minX + maxX - 1) / 2f) * cellSize, 0f, Mathf.FloorToInt((minY + maxY - 1) / 2f) * cellSize);
+        Vector3 size = new Vector3((maxX - minX + 1f) * cellSize, 1f, (maxY - minY + 1f) * cellSize);
         
         Gizmos.DrawWireCube(center, size);
     }
