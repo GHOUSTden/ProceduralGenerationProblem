@@ -1,8 +1,9 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public enum RoomType
 {
-    Default,
+    Regular,
     Entrance,
     Boss
 }
@@ -30,10 +31,13 @@ public class RoomScriptableObject : ScriptableObject
 
     [SerializeField] private Vector2Int fixedCoordinates;
     public Vector2Int FixedCoordinates => fixedCoordinates;
-        
+    
     [SerializeField] private Vector2Int roomSize;
     public Vector2Int RoomSize => roomSize;
-    
-    /*[SerializeField] private GameObject roomPrefab;
-    public GameObject RoomPrefab => roomPrefab;*/
+
+    [SerializeField] private List<RoomConnectionPoint> roomConnectionPoints;
+    public List<RoomConnectionPoint> RoomConnectionPoints => roomConnectionPoints;
+
+    [SerializeField] private GameObject roomPrefab;
+    public GameObject RoomPrefab => roomPrefab;
 }
