@@ -300,11 +300,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a446437a49f07240a3e52ca37ae4fc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GizmosVisualization
-  visualizeVertices: 1
-  visualizeTriangles: 1
+  visualizeVertices: 0
+  visualizeTriangles: 0
   visualizeMST: 1
-  visualizeExtraConnections: 1
-  placementRule: 3
+  visualizeExtraConnections: 0
+  placementRule: 4
   visualizeSpecialPlacementRule: 1
 --- !u!1 &410087039
 GameObject:
@@ -643,7 +643,7 @@ MonoBehaviour:
     y: 50
     width: 0
     height: 0
-  cellSize: 1
+  cellSize: 4
   floorHeight: 1
   roomPlacementAttempts: 150
   roomMaxSize: {x: 8, y: 6}
