@@ -33,3 +33,5 @@ A huge thank you to the creators and resources that made this project possible:
 * [4] [Wikipedia - Delaunay Triangulation](https://en.wikipedia.org/wiki/Delaunay_triangulation)
 
 * [5] [Wikipedia - Bowyer–Watson Algorithm](https://en.wikipedia.org/wiki/Bowyer%E2%80%93Watson_algorithm)
+
+* [6] [ExileCon Dev Talk - Procedural World Generation in Path of Exile](https://www.youtube.com/watch?v=EXnoHTqO7TE)
