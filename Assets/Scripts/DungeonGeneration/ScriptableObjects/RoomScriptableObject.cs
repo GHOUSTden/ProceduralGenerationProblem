@@ -35,8 +35,8 @@ public class RoomScriptableObject : ScriptableObject
     [SerializeField] private Vector2Int roomSize;
     public Vector2Int RoomSize => roomSize;
 
-    [SerializeField] private List<RoomConnectionPoint> roomConnectionPoints;
-    public List<RoomConnectionPoint> RoomConnectionPoints => roomConnectionPoints;
+    /*[SerializeField] private List<RoomConnectionPoint> roomConnectionPoints;
+    public List<RoomConnectionPoint> RoomConnectionPoints => roomConnectionPoints;*/
 
     [SerializeField] private GameObject roomPrefab;
     public GameObject RoomPrefab => roomPrefab;

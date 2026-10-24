@@ -13,7 +13,7 @@ public class DungeonVisualizer : MonoBehaviour
         Vector2Int cellCoordinates = cell.coordinates;
         Vector3 cellWorldPos = new Vector3(
             cellCoordinates.x * dungeonGeneration.cellSize,
-            0,
+            0f,
             cellCoordinates.y * dungeonGeneration.cellSize);
         
         switch (cell.cellType)
@@ -28,5 +28,13 @@ public class DungeonVisualizer : MonoBehaviour
                 Instantiate(uniqueRoomCubePrefab, cellWorldPos, Quaternion.identity);
                 break;
         }
+    }
+
+    public void VisualizeRoom(DungeonRoom room)
+    {
+        Vector2Int roomCoordinates = room.bounds.position;
+        Vector3 roomWorldPos = new Vector3(roomCoordinates.x, 0f, roomCoordinates.y);
+
+        Instantiate(room.roomPrefab, roomWorldPos, Quaternion.identity);
     }
 }

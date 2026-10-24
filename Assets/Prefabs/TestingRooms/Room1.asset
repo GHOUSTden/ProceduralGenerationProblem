@@ -15,6 +15,6 @@ MonoBehaviour:
   roomType: 0
   placementRule: 1
   fixedCoordinates: {x: 0, y: 0}
-  roomSize: {x: 0, y: 0}
+  roomSize: {x: 3, y: 3}
   roomConnectionPoints: []
   roomPrefab: {fileID: 4153559865291209367, guid: 260495581b79cd34e848a48ff4dcbe7e, type: 3}
