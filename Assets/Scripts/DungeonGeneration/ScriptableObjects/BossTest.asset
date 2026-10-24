@@ -16,3 +16,4 @@ MonoBehaviour:
   placementRule: 4
   fixedCoordinates: {x: 25, y: 35}
   roomSize: {x: 10, y: 15}
+  roomPrefab: {fileID: 1400543282598972795, guid: 13c84e00ac4c8874b971d93172fbd247, type: 3}

@@ -3,8 +3,10 @@ using System.Collections.Generic;
 
 public class DungeonRoom
 {
+    public GameObject roomPrefab;
     public RectInt bounds;
     public List<DungeonCell> cells = new List<DungeonCell>();
+    public List<RoomConnectionPoint> connectionPoints = new List<RoomConnectionPoint>();
 
     public void GenerateCells(CellType cellType)
     {
@@ -26,6 +28,22 @@ public class DungeonRoom
                 
                 cells.Add(cell);
             }
+        }
+    }
+
+    public void GetRoomConnectionPoints()
+    {
+        connectionPoints.Clear();
+
+        foreach (RoomConnectionPoint connectionPoint in roomPrefab.GetComponentsInChildren<RoomConnectionPoint>())
+        {
+            if (connectionPoint == null)
+            {
+                continue;
+            }
+
+            // Debug.Log($"Connection point added at coordinate: {connectionPoint.coordinates}");
+            connectionPoints.Add(connectionPoint);
         }
     }
 

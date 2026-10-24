@@ -205,13 +205,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalRotation: {x: 0.5, y: 0, z: 0, w: 0.8660254}
+  m_LocalPosition: {x: 25, y: 40, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 60, y: 0, z: 0}
 --- !u!114 &330585547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -643,17 +643,16 @@ MonoBehaviour:
     y: 50
     width: 0
     height: 0
-  cellSize: 4
+  cellSize: 1
   floorHeight: 1
   roomPlacementAttempts: 150
   roomMaxSize: {x: 8, y: 6}
   roomMinSize: {x: 2, y: 2}
-  uniqueRooms:
-  - {fileID: 11400000, guid: 0e8297afab8017048810d566f69aea62, type: 2}
-  - {fileID: 11400000, guid: 700dfa5fae98489408090fd8e78b6805, type: 2}
+  locations:
+  - {fileID: 11400000, guid: 02842a2c9e49b8b4d93f3a70538ebba6, type: 2}
   currentSeed: 0
   isCustomSeed: 0
-  customSeed: 10
+  customSeed: 126648097
   extraConnectionChance: 0.15
   dungeonVisualizer: {fileID: 1725333378}
   delaunayTriangulation: {fileID: 1097125171}

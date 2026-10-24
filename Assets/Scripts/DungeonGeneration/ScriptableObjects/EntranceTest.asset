@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RoomScriptableObject
   roomType: 1
   placementRule: 0
-  fixedCoordinates: {x: 0, y: 0}
+  fixedCoordinates: {x: 1, y: 0}
   roomSize: {x: 3, y: 6}
+  roomPrefab: {fileID: 3938387937621595488, guid: 7a604e049f553424e8dee5a3793b927a, type: 3}

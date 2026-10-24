@@ -13,7 +13,7 @@ public class DungeonGeneration : MonoBehaviour
     [SerializeField] private int roomPlacementAttempts;
     [SerializeField] private Vector2Int roomMaxSize;
     [SerializeField] private Vector2Int roomMinSize;
-    [SerializeField] private List<RoomScriptableObject> uniqueRooms;
+    [SerializeField] private List<LocationScriptableObject> locations;
     
     [Header("Seed Generation")] 
     [SerializeField] private int currentSeed = 0;
@@ -71,108 +71,162 @@ public class DungeonGeneration : MonoBehaviour
 
     private void PlaceUniqueRooms()
     {
-        foreach (RoomScriptableObject uniqueRoom in uniqueRooms)
+        foreach (LocationScriptableObject location in locations)
         {
-            Vector2Int location = new Vector2Int(
-                random.Next(0, dungeonBounds.position.x), 
-                random.Next(0, dungeonBounds.position.y));
-            
-            if (uniqueRoom.PlacementRule == PlacementRule.Fixed)
+            if (location.UniqueRooms == null || location.UniqueRooms.Count == 0)
             {
-                location = uniqueRoom.FixedCoordinates;
+                return;
             }
 
-            if (uniqueRoom.PlacementRule == PlacementRule.Left || uniqueRoom.PlacementRule == PlacementRule.Right || uniqueRoom.PlacementRule == PlacementRule.Top || uniqueRoom.PlacementRule == PlacementRule.Down || uniqueRoom.PlacementRule == PlacementRule.Center)
+            foreach (RoomScriptableObject uniqueRoom in location.UniqueRooms)
             {
-                location = GetDungeonBounds(uniqueRoom.PlacementRule, uniqueRoom.RoomSize);
-            }
-                
-            Vector2Int roomSize = uniqueRoom.RoomSize;
+                Vector2Int position = new Vector2Int(
+                    random.Next(0, dungeonBounds.position.x),
+                    random.Next(0, dungeonBounds.position.y));
 
-            bool isValid = true;
-            
-            DungeonRoom candidateRoom = new DungeonRoom();
-            candidateRoom.bounds.position = location;
-            candidateRoom.bounds.size = roomSize;
-            
-            DungeonRoom bufferRoom = new DungeonRoom();
-            bufferRoom.bounds.position = location + new Vector2Int(-1, -1);
-            bufferRoom.bounds.size = roomSize + new Vector2Int(2, 2);
-            
-            foreach (var room in rooms)
-            {
-                if (room.CheckRoomIntersect(bufferRoom))
+                if (uniqueRoom.PlacementRule == PlacementRule.Fixed)
                 {
-                    isValid = false;
-                    break;
+                    position = uniqueRoom.FixedCoordinates;
                 }
-            }
-            
-            candidateRoom.GenerateCells(CellType.Unique);
 
-            foreach (var cell in candidateRoom.cells)
-            {
-                if (cell.coordinates.x < 0 || cell.coordinates.x > dungeonBounds.position.x || cell.coordinates.y < 0 || cell.coordinates.y > dungeonBounds.position.y)
+                if (uniqueRoom.PlacementRule == PlacementRule.Left || uniqueRoom.PlacementRule == PlacementRule.Right || uniqueRoom.PlacementRule == PlacementRule.Top || uniqueRoom.PlacementRule == PlacementRule.Down || uniqueRoom.PlacementRule == PlacementRule.Center)
                 {
-                    isValid = false;
-                    break;
+                    position = GetDungeonBounds(uniqueRoom.PlacementRule, uniqueRoom.RoomSize);
                 }
-            }
-            
-            if (isValid)
-            {
-                rooms.Add(candidateRoom);
-                PlaceRoom(candidateRoom);
+
+                Vector2Int roomSize = uniqueRoom.RoomSize;
+
+                bool isValid = true;
+
+                Vector3 worldPosition = new Vector3(position.x, 0f, position.y);
+                GameObject roomInstance = Instantiate(uniqueRoom.RoomPrefab, worldPosition, Quaternion.identity);
+
+                DungeonRoom candidateRoom = new DungeonRoom();
+                candidateRoom.bounds.position = position;
+                candidateRoom.bounds.size = roomSize;
+                candidateRoom.roomPrefab = roomInstance;
+
+                DungeonRoom bufferRoom = new DungeonRoom();
+                bufferRoom.bounds.position = position + new Vector2Int(-1, -1);
+                bufferRoom.bounds.size = roomSize + new Vector2Int(2, 2);
+
+                foreach (var room in rooms)
+                {
+                    if (room.CheckRoomIntersect(bufferRoom))
+                    {
+                        isValid = false;
+                        break;
+                    }
+                }
+
+                candidateRoom.GenerateCells(CellType.Unique);
+
+                foreach (var cell in candidateRoom.cells)
+                {
+                    if (cell.coordinates.x < 0 || cell.coordinates.x > dungeonBounds.position.x || cell.coordinates.y < 0 || cell.coordinates.y > dungeonBounds.position.y)
+                    {
+                        isValid = false;
+                        break;
+                    }
+                }
+
+                candidateRoom.GetRoomConnectionPoints();
+
+                foreach (var point in candidateRoom.connectionPoints)
+                {
+                    if (point.coordinates.x < 0 || point.coordinates.x > dungeonBounds.position.x || point.coordinates.y < 0 || point.coordinates.y > dungeonBounds.position.y)
+                    {
+                        Debug.Log($"Room connection point are outside of the dungeon.");
+                        isValid = false;
+                        break;
+                    }
+                }
+
+                if (isValid)
+                {
+                    rooms.Add(candidateRoom);
+                    dungeonVisualizer.VisualizeRoom(candidateRoom);
+                }
+                else
+                {
+                    Destroy(roomInstance);
+                }
             }
         }
     }
     
     private void PlaceRegularRooms()
     {
-        for (int i = 0; i < roomPlacementAttempts; i++)
+        foreach (var location in locations)
         {
-            Vector2Int location = new Vector2Int(
-                random.Next(0, dungeonBounds.position.x), 
-                random.Next(0, dungeonBounds.position.y));
-
-            Vector2Int roomSize = new Vector2Int(
-                random.Next(roomMinSize.x, roomMaxSize.x + 1),
-                random.Next(roomMinSize.y, roomMaxSize.y + 1));
-
-            bool isValid = true;
-            
-            DungeonRoom candidateRoom = new DungeonRoom();
-            candidateRoom.bounds.position = location;
-            candidateRoom.bounds.size = roomSize;
-
-            DungeonRoom bufferRoom = new DungeonRoom();
-            bufferRoom.bounds.position = location + new Vector2Int(-1, -1);
-            bufferRoom.bounds.size = roomSize + new Vector2Int(2, 2);
-
-            foreach (var room in rooms)
+            for (int i = 0; i < roomPlacementAttempts; i++)
             {
-                if (room.CheckRoomIntersect(bufferRoom))
+                RoomScriptableObject roomFromPool = location.RegularRooms[random.Next(0, location.RegularRooms.Count)];
+
+                Vector2Int position = new Vector2Int(
+                    random.Next(0, dungeonBounds.position.x),
+                    random.Next(0, dungeonBounds.position.y));
+
+                Vector2Int roomSize = roomFromPool.RoomSize;
+
+                bool isValid = true;
+
+                Vector3 worldPosition = new Vector3(position.x, 0f, position.y);
+                GameObject roomInstance = Instantiate(roomFromPool.RoomPrefab, worldPosition, Quaternion.identity);
+
+                DungeonRoom candidateRoom = new DungeonRoom();
+                candidateRoom.bounds.position = position;
+                candidateRoom.bounds.size = roomSize;
+                candidateRoom.roomPrefab = roomInstance;
+
+                DungeonRoom bufferRoom = new DungeonRoom();
+                bufferRoom.bounds.position = position + new Vector2Int(-1, -1);
+                bufferRoom.bounds.size = roomSize + new Vector2Int(2, 2);
+
+                foreach (var room in rooms)
                 {
-                    isValid = false;
-                    break;
+                    if (room.CheckRoomIntersect(bufferRoom))
+                    {
+                        Debug.Log($"Room are intersect with another from available list.");
+                        isValid = false;
+                        break;
+                    }
                 }
-            }
-            
-            candidateRoom.GenerateCells(CellType.Room);
 
-            foreach (var cell in candidateRoom.cells)
-            {
-                if (cell.coordinates.x < 0 || cell.coordinates.x > dungeonBounds.position.x || cell.coordinates.y < 0 || cell.coordinates.y > dungeonBounds.position.y)
+                candidateRoom.GenerateCells(CellType.Room);
+
+                foreach (var cell in candidateRoom.cells)
                 {
-                    isValid = false;
-                    break;
+                    if (cell.coordinates.x < 0 || cell.coordinates.x > dungeonBounds.position.x || cell.coordinates.y < 0 || cell.coordinates.y > dungeonBounds.position.y)
+                    {
+                        Debug.Log($"Room cell is outside of the dungeon.");
+                        isValid = false;
+                        break;
+                    }
                 }
-            }
 
-            if (isValid)
-            {
-                rooms.Add(candidateRoom);
-                PlaceRoom(candidateRoom);
+                candidateRoom.GetRoomConnectionPoints();
+
+                foreach (var point in candidateRoom.connectionPoints)
+                {
+                    if (point.coordinates.x < 0 || point.coordinates.x > dungeonBounds.position.x || point.coordinates.y < 0 || point.coordinates.y > dungeonBounds.position.y)
+                    {
+                        Debug.Log($"Room connection point are outside of the dungeon.");
+                        isValid = false;
+                        break;
+                    }
+                }
+
+                if (isValid)
+                {
+                    rooms.Add(candidateRoom);
+                    dungeonVisualizer.VisualizeRoom(candidateRoom);
+                    // PlaceRoom(candidateRoom);
+                }
+                else
+                {
+                    Destroy(roomInstance);
+                }
             }
         }
     }
@@ -241,23 +295,22 @@ public class DungeonGeneration : MonoBehaviour
 
             DungeonRoom startRoom = rooms[connection.Start.Id];
             DungeonRoom endRoom = rooms[connection.End.Id];
+            
+            if (!TryGetClosestConnectionPair(startRoom, endRoom, out Vector2Int start, out Vector2Int goal))
+            {
+                failedPaths++;
+                continue;
+            }
+
+            Debug.Log($"Selected doorway pair: {start} -> {goal}");
 
             HashSet<Vector2Int> blockedCells = new HashSet<Vector2Int>(roomCoordinates);
 
-            foreach (DungeonCell cell in startRoom.cells)
-            {
-                blockedCells.Remove(cell.coordinates);
-            }
-
-            foreach (DungeonCell cell in endRoom.cells)
-            {
-                blockedCells.Remove(cell.coordinates);
-            }
-
-            Vector2Int start = GetRoomGridCenter(startRoom);
-            Vector2Int goal = GetRoomGridCenter(endRoom);
+            blockedCells.Remove(start);
+            blockedCells.Remove(goal);
 
             List<Vector2Int> path = aStarPathfinder.FindPath(start, goal, blockedCells, dungeonBounds.position.x, dungeonBounds.position.y);
+            // Debug.Log($"Path finded");
 
             if (path.Count == 0)
             {
@@ -294,6 +347,37 @@ public class DungeonGeneration : MonoBehaviour
                   $"Failed paths: {failedPaths}.");
     }
     
+    private bool TryGetClosestConnectionPair(DungeonRoom startRoom, DungeonRoom endRoom, out Vector2Int start, out Vector2Int goal)
+    {
+        start = default;
+        goal = default;
+
+        int shortestDistance = int.MaxValue;
+
+        foreach (RoomConnectionPoint startPoint in startRoom.connectionPoints)
+        {
+            Vector2Int startCoordinates = startPoint.coordinates;
+
+            foreach (RoomConnectionPoint endPoint in endRoom.connectionPoints)
+            {
+                Vector2Int endCoordinates = endPoint.coordinates;
+
+                int distance = 
+                    Mathf.Abs(startCoordinates.x - endCoordinates.x) + 
+                    Mathf.Abs(startCoordinates.y - endCoordinates.y);
+
+                if (distance < shortestDistance)
+                {
+                    shortestDistance = distance;
+                    start = startCoordinates;
+                    goal = endCoordinates;
+                }
+            }
+        }
+
+        return shortestDistance != int.MaxValue;
+    }
+
     private HashSet<Vector2Int> GetRoomCoordinates()
     {
         HashSet<Vector2Int> roomCoordinates = new HashSet<Vector2Int>();
@@ -339,8 +423,6 @@ public class DungeonGeneration : MonoBehaviour
                 maxY = dungeonBounds.yMax - minY - roomSize.y;
                 break;
         }
-
-        // Debug.Log($"Calculated Bounds For Placement Rule - {placementRule}: XMin - {minX}, XMax - {maxX}, YMin - {minY}, YMax - {maxY}.");
         
         Vector2Int finalCoordinates = new Vector2Int(
             random.Next(minX, maxX + 1), 
@@ -348,7 +430,7 @@ public class DungeonGeneration : MonoBehaviour
         
         return finalCoordinates;
     }
-    
+
     private Vector2Int GetRoomGridCenter(DungeonRoom room)
     {
         return new Vector2Int(Mathf.FloorToInt((room.bounds.xMin + room.bounds.xMax - 1) / 2f), Mathf.FloorToInt((room.bounds.yMin + room.bounds.yMax - 1) / 2f));
