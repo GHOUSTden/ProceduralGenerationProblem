@@ -98,9 +98,13 @@ public class DungeonGeneration : MonoBehaviour
 
                 bool isValid = true;
 
+                Vector3 worldPosition = new Vector3(position.x, 0f, position.y);
+                GameObject roomInstance = Instantiate(uniqueRoom.RoomPrefab, worldPosition, Quaternion.identity);
+
                 DungeonRoom candidateRoom = new DungeonRoom();
                 candidateRoom.bounds.position = position;
                 candidateRoom.bounds.size = roomSize;
+                candidateRoom.roomPrefab = roomInstance;
 
                 DungeonRoom bufferRoom = new DungeonRoom();
                 bufferRoom.bounds.position = position + new Vector2Int(-1, -1);
@@ -126,10 +130,26 @@ public class DungeonGeneration : MonoBehaviour
                     }
                 }
 
+                candidateRoom.GetRoomConnectionPoints();
+
+                foreach (var point in candidateRoom.connectionPoints)
+                {
+                    if (point.coordinates.x < 0 || point.coordinates.x > dungeonBounds.position.x || point.coordinates.y < 0 || point.coordinates.y > dungeonBounds.position.y)
+                    {
+                        Debug.Log($"Room connection point are outside of the dungeon.");
+                        isValid = false;
+                        break;
+                    }
+                }
+
                 if (isValid)
                 {
                     rooms.Add(candidateRoom);
-                    PlaceRoom(candidateRoom);
+                    dungeonVisualizer.VisualizeRoom(candidateRoom);
+                }
+                else
+                {
+                    Destroy(roomInstance);
                 }
             }
         }
@@ -139,10 +159,10 @@ public class DungeonGeneration : MonoBehaviour
     {
         foreach (var location in locations)
         {
-            RoomScriptableObject roomFromPool = location.RegularRooms[random.Next(0, location.RegularRooms.Count)];
-
             for (int i = 0; i < roomPlacementAttempts; i++)
             {
+                RoomScriptableObject roomFromPool = location.RegularRooms[random.Next(0, location.RegularRooms.Count)];
+
                 Vector2Int position = new Vector2Int(
                     random.Next(0, dungeonBounds.position.x),
                     random.Next(0, dungeonBounds.position.y));
@@ -290,7 +310,7 @@ public class DungeonGeneration : MonoBehaviour
             blockedCells.Remove(goal);
 
             List<Vector2Int> path = aStarPathfinder.FindPath(start, goal, blockedCells, dungeonBounds.position.x, dungeonBounds.position.y);
-            Debug.Log($"Path finded");
+            // Debug.Log($"Path finded");
 
             if (path.Count == 0)
             {

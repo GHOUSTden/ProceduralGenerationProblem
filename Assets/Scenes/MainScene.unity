@@ -652,7 +652,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 02842a2c9e49b8b4d93f3a70538ebba6, type: 2}
   currentSeed: 0
   isCustomSeed: 0
-  customSeed: 10
+  customSeed: 126648097
   extraConnectionChance: 0.15
   dungeonVisualizer: {fileID: 1725333378}
   delaunayTriangulation: {fileID: 1097125171}

@@ -7,7 +7,7 @@ public class RoomConnectionPoint : MonoBehaviour
     public List<GameObject> connectedObjects;
     public bool isUsed = false;
 
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
 
