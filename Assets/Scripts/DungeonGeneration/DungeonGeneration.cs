@@ -151,11 +151,13 @@ public class DungeonGeneration : MonoBehaviour
 
                 bool isValid = true;
 
+                Vector3 worldPosition = new Vector3(position.x, 0f, position.y);
+                GameObject roomInstance = Instantiate(roomFromPool.RoomPrefab, worldPosition, Quaternion.identity);
+
                 DungeonRoom candidateRoom = new DungeonRoom();
                 candidateRoom.bounds.position = position;
                 candidateRoom.bounds.size = roomSize;
-                candidateRoom.roomPrefab = roomFromPool.RoomPrefab;
-                candidateRoom.roomPrefab.transform.position = new Vector3(position.x, 0f, position.y);
+                candidateRoom.roomPrefab = roomInstance;
 
                 DungeonRoom bufferRoom = new DungeonRoom();
                 bufferRoom.bounds.position = position + new Vector2Int(-1, -1);
@@ -200,6 +202,10 @@ public class DungeonGeneration : MonoBehaviour
                     rooms.Add(candidateRoom);
                     dungeonVisualizer.VisualizeRoom(candidateRoom);
                     // PlaceRoom(candidateRoom);
+                }
+                else
+                {
+                    Destroy(roomInstance);
                 }
             }
         }
@@ -269,23 +275,22 @@ public class DungeonGeneration : MonoBehaviour
 
             DungeonRoom startRoom = rooms[connection.Start.Id];
             DungeonRoom endRoom = rooms[connection.End.Id];
+            
+            if (!TryGetClosestConnectionPair(startRoom, endRoom, out Vector2Int start, out Vector2Int goal))
+            {
+                failedPaths++;
+                continue;
+            }
+
+            Debug.Log($"Selected doorway pair: {start} -> {goal}");
 
             HashSet<Vector2Int> blockedCells = new HashSet<Vector2Int>(roomCoordinates);
 
-            foreach (DungeonCell cell in startRoom.cells)
-            {
-                blockedCells.Remove(cell.coordinates);
-            }
-
-            foreach (DungeonCell cell in endRoom.cells)
-            {
-                blockedCells.Remove(cell.coordinates);
-            }
-
-            Vector2Int start = GetRoomGridCenter(startRoom);
-            Vector2Int goal = GetRoomGridCenter(endRoom);
+            blockedCells.Remove(start);
+            blockedCells.Remove(goal);
 
             List<Vector2Int> path = aStarPathfinder.FindPath(start, goal, blockedCells, dungeonBounds.position.x, dungeonBounds.position.y);
+            Debug.Log($"Path finded");
 
             if (path.Count == 0)
             {
@@ -322,6 +327,37 @@ public class DungeonGeneration : MonoBehaviour
                   $"Failed paths: {failedPaths}.");
     }
     
+    private bool TryGetClosestConnectionPair(DungeonRoom startRoom, DungeonRoom endRoom, out Vector2Int start, out Vector2Int goal)
+    {
+        start = default;
+        goal = default;
+
+        int shortestDistance = int.MaxValue;
+
+        foreach (RoomConnectionPoint startPoint in startRoom.connectionPoints)
+        {
+            Vector2Int startCoordinates = startPoint.coordinates;
+
+            foreach (RoomConnectionPoint endPoint in endRoom.connectionPoints)
+            {
+                Vector2Int endCoordinates = endPoint.coordinates;
+
+                int distance = 
+                    Mathf.Abs(startCoordinates.x - endCoordinates.x) + 
+                    Mathf.Abs(startCoordinates.y - endCoordinates.y);
+
+                if (distance < shortestDistance)
+                {
+                    shortestDistance = distance;
+                    start = startCoordinates;
+                    goal = endCoordinates;
+                }
+            }
+        }
+
+        return shortestDistance != int.MaxValue;
+    }
+
     private HashSet<Vector2Int> GetRoomCoordinates()
     {
         HashSet<Vector2Int> roomCoordinates = new HashSet<Vector2Int>();

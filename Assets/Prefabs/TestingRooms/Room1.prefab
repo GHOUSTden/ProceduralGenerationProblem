@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5ac39565380c744c9c42650b3905a15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoomConnectionPoint
+  coordinates: {x: 3, y: 1}
   connectedObjects: []
   isUsed: 0
 --- !u!1 &1898424727280884987
@@ -90,6 +91,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5ac39565380c744c9c42650b3905a15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoomConnectionPoint
+  coordinates: {x: -1, y: 1}
   connectedObjects: []
   isUsed: 0
 --- !u!1 &3692539156866865538
@@ -204,6 +206,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5ac39565380c744c9c42650b3905a15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoomConnectionPoint
+  coordinates: {x: 1, y: 3}
   connectedObjects: []
   isUsed: 0
 --- !u!1 &6888033179624810505
@@ -290,6 +293,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5ac39565380c744c9c42650b3905a15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoomConnectionPoint
+  coordinates: {x: 1, y: -1}
   connectedObjects: []
   isUsed: 0
 --- !u!1001 &812199650085278806

@@ -42,6 +42,7 @@ public class DungeonRoom
                 continue;
             }
 
+            Debug.Log($"Connection point added at coordinate: {connectionPoint.coordinates}");
             connectionPoints.Add(connectionPoint);
         }
     }
