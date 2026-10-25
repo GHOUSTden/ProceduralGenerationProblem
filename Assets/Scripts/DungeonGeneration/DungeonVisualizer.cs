@@ -33,7 +33,7 @@ public class DungeonVisualizer : MonoBehaviour
     public void VisualizeRoom(DungeonRoom room)
     {
         Vector2Int roomCoordinates = room.bounds.position;
-        Vector3 roomWorldPos = new Vector3(roomCoordinates.x, 0f, roomCoordinates.y);
+        Vector3 roomWorldPos = new Vector3(roomCoordinates.x * dungeonGeneration.cellSize, 0f, roomCoordinates.y * dungeonGeneration.cellSize);
 
         Instantiate(room.roomPrefab, roomWorldPos, Quaternion.identity);
     }

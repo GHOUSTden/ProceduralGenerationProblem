@@ -98,7 +98,7 @@ public class DungeonGeneration : MonoBehaviour
 
                 bool isValid = true;
 
-                Vector3 worldPosition = new Vector3(position.x, 0f, position.y);
+                Vector3 worldPosition = new Vector3(position.x * cellSize, 0f, position.y * cellSize);
                 GameObject roomInstance = Instantiate(uniqueRoom.RoomPrefab, worldPosition, Quaternion.identity);
 
                 DungeonRoom candidateRoom = new DungeonRoom();
@@ -145,7 +145,8 @@ public class DungeonGeneration : MonoBehaviour
                 if (isValid)
                 {
                     rooms.Add(candidateRoom);
-                    dungeonVisualizer.VisualizeRoom(candidateRoom);
+                    /*dungeonVisualizer.VisualizeRoom(candidateRoom);
+                    Destroy(roomInstance);*/
                 }
                 else
                 {
@@ -220,8 +221,8 @@ public class DungeonGeneration : MonoBehaviour
                 if (isValid)
                 {
                     rooms.Add(candidateRoom);
-                    dungeonVisualizer.VisualizeRoom(candidateRoom);
-                    // PlaceRoom(candidateRoom);
+                    /*dungeonVisualizer.VisualizeRoom(candidateRoom);
+                    Destroy(roomInstance);*/
                 }
                 else
                 {
