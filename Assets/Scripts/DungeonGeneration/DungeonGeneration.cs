@@ -8,7 +8,7 @@ public class DungeonGeneration : MonoBehaviour
 {
     [Header("Dungeon Settings")] 
     [SerializeField] private RectInt dungeonBounds;
-    public float cellSize;
+    public int cellSize;
     public float floorHeight;
     [SerializeField] private int roomPlacementAttempts;
     [SerializeField] private Vector2Int roomMaxSize;
@@ -357,11 +357,11 @@ public class DungeonGeneration : MonoBehaviour
 
         foreach (RoomConnectionPoint startPoint in startRoom.connectionPoints)
         {
-            Vector2Int startCoordinates = startPoint.coordinates;
+            Vector2Int startCoordinates = startPoint.coordinates / cellSize;
 
             foreach (RoomConnectionPoint endPoint in endRoom.connectionPoints)
             {
-                Vector2Int endCoordinates = endPoint.coordinates;
+                Vector2Int endCoordinates = endPoint.coordinates / cellSize;
 
                 int distance = 
                     Mathf.Abs(startCoordinates.x - endCoordinates.x) + 
