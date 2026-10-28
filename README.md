@@ -12,7 +12,7 @@ So, this is my attempt at creating procedural dungeon generation on Unity using 
 Even if this project is especially for my game, i will make here a lot of thing that can be useful for everyone, so what i'm actually trying to solve?
 1. **Multi-floor Dungeon Generation** - I actually found some useful dungeon generators that have that, but i wanted to try doing something myself and also make this customizable, so in case if i wanted to have only 2 floors i can just tell generator to do that.
 2. **Zones** - I already found one person that did that and i really liked that idea and i wanted to make it myself with my own modifications in it.
-3. **High Customizability** - By that i mean that dungeon can generate what i wanted it to generate, like a forest or caves like location using Cellular Automata, also with the ability to customize their behaviour, as a indoors locations generation, etc.
+3. **High Customizability** - By that i mean that dungeon can generate what i wanted it to generate, like a forest or caves like location using tiles like PoE1 and PoE2 does, also with the ability to customize their behaviour, as a indoors locations generation, etc.
 
 ---
 
